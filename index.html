@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle Escolar - Van Escolar</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #eef2f7;
+      color: #0f172a;
+    }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 14px;
+    }
+    .header {
+      background: linear-gradient(135deg, #020617, #1e293b);
+      color: white;
+      padding: 22px;
+      border-radius: 28px;
+      box-shadow: 0 12px 30px rgba(15,23,42,.25);
+    }
+    .tag {
+      color: #fbbf24;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 6px 0 4px;
+      font-size: 34px;
+    }
+    .subtitle {
+      color: #cbd5e1;
+      margin: 0;
+      font-size: 14px;
+    }
+    .month-box {
+      margin-top: 16px;
+      background: rgba(255,255,255,.12);
+      border-radius: 22px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .month-center {
+      text-align: center;
+      flex: 1;
+    }
+    .month-label {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    .month-name {
+      font-size: 22px;
+      font-weight: 900;
+    }
+    button {
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .month-btn {
+      background: rgba(255,255,255,.16);
+      color: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(15,23,42,.08);
+    }
+    .metric-label {
+      color: #64748b;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .metric-value {
+      font-size: 23px;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+    .layout {
+      display: grid;
+      gap: 14px;
+    }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+    .small {
+      color: #64748b;
+      font-size: 13px;
+      margin: 4px 0 0;
+    }
+    .btn {
+      background: #0f172a;
+      color: white;
+      padding: 11px 14px;
+      border-radius: 16px;
+    }
+    .btn-light {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .search, input, select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid #dbe3ef;
+      font-size: 15px;
+      outline: none;
+      background: white;
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .form-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .child-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .child {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 14px;
+      text-align: left;
+      width: 100%;
+    }
+    .child.active {
+      background: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+    .child-name {
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .child-info {
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+    .child.active .child-info {
+      color: #cbd5e1;
+    }
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .paid {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .pending {
+      background: #fef3c7;
+      color: #b45309;
+    }
+    .hidden { display: none; }
+    .history-item {
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 12px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .history-value {
+      font-weight: 900;
+      font-size: 17px;
+    }
+    .history-date {
+      color: #64748b;
+      font-size: 12px;
+    }
+    .info-row {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 10px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .empty {
+      text-align: center;
+      color: #64748b;
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 24px;
+    }
+    @media (min-width: 850px) {
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+      .month-box { margin-top: 0; min-width: 300px; }
+      .cards { grid-template-columns: repeat(4, 1fr); }
+      .layout { grid-template-columns: 1.15fr .85fr; }
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <div>
+          <div class="tag">Controle Escolar</div>
+          <h1>Van Escolar</h1>
+          <p class="subtitle">Crianças, pagamentos e histórico mensal em um só lugar.</p>
+        </div>
+        <div class="month-box">
+          <button class="month-btn" onclick="previousMonth()">‹</button>
+          <div class="month-center">
+            <div class="month-label">Mês de controle</div>
+            <div class="month-name" id="monthName"></div>
+            <div id="yearName"></div>
+          </div>
+          <button class="month-btn" onclick="nextMonth()">›</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="cards">
+      <div class="card"><div class="metric-label">Crianças</div><div class="metric-value" id="totalChildren">0</div></div>
+      <div class="card"><div class="metric-label">Pagaram no mês</div><div class="metric-value" id="paidChildren">0</div></div>
+      <div class="card"><div class="metric-label">Pendentes</div><div class="metric-value" id="pendingChildren">0</div></div>
+      <div class="card"><div class="metric-label">Recebido</div><div class="metric-value" id="totalReceived">R$ 0,00</div></div>
+    </section>
+
+    <main class="layout">
+      <section class="card">
+        <div class="section-title">
+          <div>
+            <h2>Crianças cadastradas</h2>
+            <p class="small">Toque em uma criança para ver detalhes e histórico.</p>
+          </div>
+          <button class="btn" onclick="toggleChildForm()">+ Nova</button>
+        </div>
+
+        <input class="search" id="search" placeholder="Pesquisar criança..." oninput="render()" />
+
+        <form id="childForm" class="hidden" onsubmit="addChild(event)" style="margin-top:12px;">
+          <div class="form-grid">
+            <div><label>Nome da criança</label><input id="childName" required /></div>
+            <div><label>Valor mensal</label><input id="monthlyValue" type="number" step="0.01" /></div>
+          </div>
+          <button class="btn" style="width:100%;margin-top:10px;">Salvar criança</button>
+        </form>
+
+        <div class="child-list" id="childList"></div>
+      </section>
+
+      <aside>
+        <section class="card">
+          <h2>Registrar pagamento</h2>
+          <p class="small">O histórico fica salvo por criança e por mês.</p>
+          <form onsubmit="addPayment(event)" style="margin-top:12px;">
+            <div style="margin-bottom:10px;"><label>Criança</label><select id="paymentChild" required></select></div>
+            <div style="margin-bottom:10px;"><label>Data do pagamento</label><input id="paymentDate" type="date" required /></div>
+            <div style="margin-bottom:10px;"><label>Valor pago</label><input id="paymentValue" type="number" step="0.01" required /></div>
+            <div style="margin-bottom:10px;"><label>Observação</label><input id="paymentNote" /></div>
+            <button class="btn" style="width:100%;">Adicionar ao histórico</button>
+          </form>
+        </section>
+
+        <section class="card" style="margin-top:14px;">
+          <div class="section-title">
+            <div>
+              <h2>Detalhes</h2>
+              <p class="small" id="detailTitle">Selecione uma criança</p>
+            </div>
+            <button id="deleteChildBtn" class="btn btn-danger hidden" onclick="deleteSelectedChild()">Excluir</button>
+          </div>
+          <div id="details" class="empty">Toque em uma criança para visualizar o histórico.</div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+    const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+    const today = new Date();
+
+    let month = today.getMonth();
+    let year = today.getFullYear();
+    let selectedId = null;
+
+    let children = JSON.parse(localStorage.getItem("controle-escolar-van") || "[]");
+
+    if (children.length === 0) {
+      children = [{
+        id: crypto.randomUUID(),
+        name: "Exemplo - Ana Clara",
+        responsible: "Responsável",
+        phone: "",
+        route: "Manhã",
+        monthlyValue: 350,
+        payments: [{
+          id: crypto.randomUUID(),
+          date: new Date(year, month, 5).toISOString().slice(0,10),
+          month,
+          year,
+          value: 350,
+          note: "Pagamento de exemplo"
+        }]
+      }];
+      save();
+    }
+
+    document.getElementById("paymentDate").value = today.toISOString().slice(0,10);
+
+    function save() {
+      localStorage.setItem("controle-escolar-van", JSON.stringify(children));
+    }
+
+    function safeNumber(v) {
+      const n = Number(String(v).replace(",", "."));
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function getPaymentsForPeriod(child) {
+      return (child.payments || []).filter(p => Number(p.month) === month && Number(p.year) === year);
+    }
+
+    function getLastPayment(child) {
+      return [...(child.payments || [])].sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+    }
+
+    function previousMonth() {
+      if (month === 0) { month = 11; year--; } else { month--; }
+      render();
+    }
+
+    function nextMonth() {
+      if (month === 11) { month = 0; year++; } else { month++; }
+      render();
+    }
+
+    function toggleChildForm() {
+      document.getElementById("childForm").classList.toggle("hidden");
+    }
+
+    function addChild(event) {
+      event.preventDefault();
+
+      const child = {
+        id: crypto.randomUUID(),
+        name: document.getElementById("childName").value.trim(),
+        responsible: "",
+        phone: "",
+        route: "",
+        monthlyValue: safeNumber(document.getElementById("monthlyValue").value),
+        payments: []
+      };
+
+      if (!child.name) return;
+
+      children.push(child);
+
+      event.target.reset();
+      document.getElementById("childForm").classList.add("hidden");
+
+      save();
+      render();
+    }
+
+    function addPayment(event) {
+      event.preventDefault();
+      const childId = document.getElementById("paymentChild").value;
+      const date = document.getElementById("paymentDate").value;
+      const d = new Date(date + "T00:00:00");
+      const payment = {
+        id: crypto.randomUUID(),
+        date,
+        month: d.getMonth(),
+        year: d.getFullYear(),
+        value: safeNumber(document.getElementById("paymentValue").value),
+        note: document.getElementById("paymentNote").value.trim()
+      };
+      children = children.map(c => c.id === childId ? {...c, payments: [...(c.payments || []), payment]} : c);
+      selectedId = childId;
+      document.getElementById("paymentValue").value = "";
+      document.getElementById("paymentNote").value = "";
+      save();
+      render();
+    }
+
+    function selectChild(id) {
+      selectedId = id;
+      const child = children.find(c => c.id === id);
+      document.getElementById("paymentChild").value = id;
+      document.getElementById("paymentValue").value = child.monthlyValue || "";
+      render();
+    }
+
+    function deleteSelectedChild() {
+      if (!selectedId) return;
+      if (!confirm("Deseja excluir essa criança e todo o histórico dela?")) return;
+      children = children.filter(c => c.id !== selectedId);
+      selectedId = null;
+      save();
+      render();
+    }
+
+    function deletePayment(childId, paymentId) {
+      children = children.map(c => c.id === childId ? {...c, payments: c.payments.filter(p => p.id !== paymentId)} : c);
+      save();
+      render();
+    }
+
+    function render() {
+      document.getElementById("monthName").textContent = months[month];
+      document.getElementById("yearName").textContent = year;
+
+      const query = document.getElementById("search").value.toLowerCase();
+      const filtered = children
+        .filter(c => c.name.toLowerCase().includes(query))
+        .sort((a,b) => a.name.localeCompare(b.name));
+
+      const paidChildren = children.filter(c => getPaymentsForPeriod(c).length > 0).length;
+      const totalReceived = children.reduce((sum, c) => sum + getPaymentsForPeriod(c).reduce((s,p) => s + safeNumber(p.value), 0), 0);
+
+      document.getElementById("totalChildren").textContent = children.length;
+      document.getElementById("paidChildren").textContent = paidChildren;
+      document.getElementById("pendingChildren").textContent = children.length - paidChildren;
+      document.getElementById("totalReceived").textContent = money.format(totalReceived);
+
+      const paymentChild = document.getElementById("paymentChild");
+      paymentChild.innerHTML = '<option value="">Selecione</option>' + children
+        .sort((a,b) => a.name.localeCompare(b.name))
+        .map(c => `<option value="${c.id}">${c.name}</option>`)
+        .join("");
+      if (selectedId) paymentChild.value = selectedId;
+
+      document.getElementById("childList").innerHTML = filtered.map(c => {
+        const paid = getPaymentsForPeriod(c).length > 0;
+        const last = getLastPayment(c);
+        return `
+          <button class="child ${selectedId === c.id ? "active" : ""}" onclick="selectChild('${c.id}')">
+            <div class="child-name">${c.name}</div>
+            <div class="child-info">${c.responsible || "Responsável não informado"}</div>
+            <div class="child-info">Último pagamento: ${last ? new Date(last.date + "T00:00:00").toLocaleDateString("pt-BR") : "sem registro"}</div>
+            <span class="status ${paid ? "paid" : "pending"}">${paid ? "Pago" : "Pendente"}</span>
+          </button>
+        `;
+      }).join("");
+
+      renderDetails();
+    }
+
+    function renderDetails() {
+      const child = children.find(c => c.id === selectedId);
+      const details = document.getElementById("details");
+      const title = document.getElementById("detailTitle");
+      const deleteBtn = document.getElementById("deleteChildBtn");
+
+      if (!child) {
+        title.textContent = "Selecione uma criança";
+        deleteBtn.classList.add("hidden");
+        details.className = "empty";
+        details.innerHTML = "Toque em uma criança para visualizar o histórico.";
+        return;
+      }
+
+      title.textContent = child.name;
+      deleteBtn.classList.remove("hidden");
+      details.className = "";
+
+      const history = [...(child.payments || [])]
+        .sort((a,b) => new Date(b.date) - new Date(a.date))
+        .map(p => `
+          <div class="history-item">
+            <div>
+              <div class="history-value">${money.format(safeNumber(p.value))}</div>
+              <div class="history-date">${new Date(p.date + "T00:00:00").toLocaleDateString("pt-BR")} • ${months[p.month]}/${p.year}</div>
+              ${p.note ? `<div class="history-date">${p.note}</div>` : ""}
+            </div>
+            <button class="btn btn-danger" onclick="deletePayment('${child.id}', '${p.id}')">Excluir</button>
+          </div>
+        `).join("");
+
+      details.innerHTML = `
+        <div class="info-row"><strong>Responsável</strong><span>${child.responsible || "-"}</span></div>
+        <div class="info-row"><strong>Telefone</strong><span>${child.phone || "-"}</span></div>
+        <div class="info-row"><strong>Turno/Rota</strong><span>${child.route || "-"}</span></div>
+        <div class="info-row"><strong>Valor mensal</strong><span>${money.format(safeNumber(child.monthlyValue))}</span></div>
+        <h3>Histórico</h3>
+        ${history || '<p class="small">Nenhum pagamento registrado ainda.</p>'}
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
